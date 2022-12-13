@@ -5,15 +5,15 @@
 % Can be used for conv, deconv etc
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \tikzset{Box/.pic={\tikzset{/boxblock/.cd,#1}
-        \tikzstyle{box}=[every edge/.append style={pic actions, densely dashed, opacity=.7},fill opacity=\opacity, pic actions,fill=\fill]
+        \tikzstyle{box}=[every edge/.append style={pic actions, densely dashed, opacity=.7},fill opacity=\opacity, pic actions]
         
         \pgfmathsetmacro{\y}{\cubey*\scale}
         \pgfmathsetmacro{\z}{\cubez*\scale}
-   
+
         %Multiple concatenated boxes
         \foreach[count=\i,%
-                 evaluate=\i as \xlabel using {array({\boxlabels},\i-1)},% 
-                 evaluate=\unscaledx as \k using {\unscaledx*\scale+\prev}, remember=\k as \prev (initially 0)] 
+                 evaluate=\i as \xlabel using {array({\boxlabels},\i-1)},
+                 evaluate=\unscaledx as \k using {\unscaledx*\scale+\prev}, remember=\k as \prev (initially 0)]
                  \unscaledx in \cubex
         {
             \pgfmathsetmacro{\x}{\unscaledx*\scale}
@@ -26,7 +26,7 @@
             \coordinate (g) at (\k-\x ,-\y/2 ,-\z/2); 
             \coordinate (h) at (\k-\x , \y/2 ,-\z/2); 
         
-            \draw [box] 
+            \draw [box, fill=\fill]
                 (d) -- (a) -- (b) -- (c) -- cycle     
                 (d) -- (a) -- (h) -- (e) -- cycle
                 %dotted edges
@@ -36,19 +36,19 @@
             ;
             \path (b) edge ["\xlabel"',midway] (c);
             
-            \xdef\LastEastx{\k} %\k persists as \LastEastx after loop 
+            \xdef\LastEastx{\k} %\k persists as \LastEastx after loop
         }%Loop ends
-        \draw [box] (d) -- (e) -- (f) -- (c) -- cycle; %East face of last box     
+        \draw [box, fill=\fill] (d) -- (e) -- (f) -- (c) -- cycle; %East face of last box
         
         \coordinate (a1) at (0 , \y/2 , \z/2);
         \coordinate (b1) at (0 ,-\y/2 , \z/2);
-        \tikzstyle{depthlabel}=[pos=0,text width=14*\z,text centered,sloped]       
+        \tikzstyle{depthlabel}=[pos=0.5,text width=16*\z,text centered,sloped]
         
-        \path (c) edge ["\small\zlabel"',depthlabel](f); %depth label
+        \path (a) edge ["\zlabel"',depthlabel](h); %depth label
         \path (b1) edge ["\ylabel",midway] (a1);  %height label
         
         
-        \tikzstyle{captionlabel}=[text width=15*\LastEastx/\scale,text centered]       
+        \tikzstyle{captionlabel}=[text width=16*\LastEastx/\scale,text centered]
         \path (\LastEastx/2,-\y/2,+\z/2) + (0,-25pt) coordinate (cap) 
         edge ["\textcolor{black}{ \bf \caption}"',captionlabel](cap) ; %Block caption/pic object label
          
@@ -96,7 +96,7 @@
     name/.store         in=\name,
     fill/.store         in=\fill,
     opacity/.store      in=\opacity,
-    fill={rgb:red,5;green,5;blue,5;white,15},
+    fill="green",
     opacity=0.4,
     width=2,
     height=13,
